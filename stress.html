@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stress Management</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: #e7f5f2;
+        color: #333;
+    }
+
+    header {
+        background: #5cbdbb;
+        padding: 20px;
+        text-align: center;
+        color: white;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .container {
+        width: 90%;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .section {
+        background: white;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 10px;
+        box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        color: #2b6f6b;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #5cbdbb;
+    }
+
+    button {
+        background: #5cbdbb;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background: #4aa7a3;
+    }
+
+    #output, #quoteBox, #diaryEntries {
+        margin-top: 15px;
+        padding: 10px;
+        font-size: 16px;
+        border-left: 5px solid #5cbdbb;
+        background: #f0faf9;
+        display: none;
+    }
+
+    /* Breathing Animation */
+    #circle {
+        width: 120px;
+        height: 120px;
+        background: #92e0d6;
+        border-radius: 50%;
+        margin: 20px auto;
+        animation: breathe 6s infinite;
+    }
+
+    @keyframes breathe {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.4); }
+        100% { transform: scale(1); }
+    }
+</style>
+
+</head>
+<body>
+
+<header>Stress Management Guide</header>
+
+<div class="container">
+
+    <!-- User Input Section -->
+    <div class="section">
+        <h2>Check Your Stress Level</h2>
+        <input type="text" id="name" placeholder="Enter your name">
+        
+        <label>Your stress level (1–10):</label>
+        <input type="number" id="level" min="1" max="10" placeholder="Enter a number">
+
+        <label>Main reason for stress:</label>
+        <select id="trigger">
+            <option value="work">Work</option>
+            <option value="studies">Studies</option>
+            <option value="family">Family Issues</option>
+            <option value="health">Health</option>
+	    <option value="Relationship">Relationship</option>
+
+            <option value="unknown">Not sure</option>
+        </select>
+
+        <button onclick="giveTips()">Get Tips</button>
+
+        <div id="output"></div>
+    </div>
+
+    <!-- Motivational Quotes -->
+    <div class="section">
+        <h2>Motivational Quote</h2>
+        <button onclick="newQuote()">Show Motivational Quote</button>
+        <div id="quoteBox"></div>
+    </div>
+
+    <!-- Stress Diary -->
+    <div class="section">
+        <h2>Stress Diary</h2>
+        <textarea id="diaryText" placeholder="Write about how you feel today..." rows="4"></textarea>
+        <button onclick="saveDiary()">Save Entry</button>
+
+        <h3>Previous Entries</h3>
+        <div id="diaryEntries"></div>
+    </div>
+
+    <!-- Breathing Animation -->
+    <div class="section">
+        <h2>1-Minute Breathing Exercise</h2>
+        <p>Follow the circle: breathe in as it grows, breathe out as it shrinks.</p>
+        <div id="circle"></div>
+    </div>
+
+</div>
+
+<script>
+// MOTIVATIONAL QUOTES
+let quotes = [
+    "You are stronger than your stress.",
+    "Every day is a fresh start.",
+    "Take a deep breath — you’re doing great.",
+    "Small steps every day lead to big results.",
+    "Believe in yourself, you’ve made it this far.",
+    "Your mind is powerful. Use it to calm, not worry.",
+    "You deserve peace and happiness.",
+    "This moment will pass. You are in control.",
+    "Even the hardest days only last 24 hours."
+];
+
+function newQuote() {
+    let quoteBox = document.getElementById("quoteBox");
+    let randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    quoteBox.style.display = "block";
+    quoteBox.innerHTML = randomQuote;
+}
+
+// STRESS TIPS
+function giveTips() {
+    let name = document.getElementById("name").value;
+    let level = document.getElementById("level").value;
+    let trigger = document.getElementById("trigger").value;
+    let output = document.getElementById("output");
+
+    if (!name || !level) {
+        output.style.display = "block";
+        output.innerHTML = "Please enter your name and stress level.";
+        return;
+    }
+
+    let tips = "";
+    let meditation = 
+        "Close your eyes. Take a slow deep breath in for 4 seconds… " +
+        "Hold for 2 seconds… Slowly breathe out for 6 seconds… Repeat 5 times.";
+
+    if (level <= 3) {
+        tips = "You seem calm! Maintain your healthy habits.";
+    } 
+    else if (level <= 6) {
+        tips = "Moderate stress. Take a short walk, drink water, and breathe slowly.";
+    } 
+    else {
+        tips = "High stress. Stop for a few minutes. Breathe deeply and clear your mind.";
+    }
+
+    let triggerTips = {
+        work: "Break tasks into smaller steps and take short breaks.",
+        studies: "Study in short intervals. Don't overload yourself.",
+        family: "Talk to someone close or give yourself a quiet moment.",
+        health: "Relax your muscles, avoid overthinking, stay hydrated.",
+	Relationship:"Relationship isn’t about never hurting each other it’s about healing together slowly and honestly.",
+        unknown: "It's okay not to know. Focus on your breath."
+    };
+
+    output.style.display = "block";
+    output.innerHTML = `
+        <strong>Hello ${name}!</strong><br><br>
+        <strong>Your Stress Tips:</strong><br>${tips}<br><br>
+        <strong>Cause-related Tip:</strong><br>${triggerTips[trigger]}<br><br>
+        <strong>Short Meditation:</strong><br>${meditation}
+    `;
+}
+
+// STRESS DIARY (saved locally)
+function saveDiary() {
+    let text = document.getElementById("diaryText").value;
+    if (text.trim() === "") {
+        alert("Please write something before saving.");
+        return;
+    }
+
+    let diaryEntries = JSON.parse(localStorage.getItem("stressDiary")) || [];
+    diaryEntries.push(text);
+    localStorage.setItem("stressDiary", JSON.stringify(diaryEntries));
+
+    document.getElementById("diaryText").value = "";
+    loadDiary();
+}
+
+function loadDiary() {
+    let diaryEntries = JSON.parse(localStorage.getItem("stressDiary")) || [];
+    let diaryBox = document.getElementById("diaryEntries");
+
+    diaryBox.style.display = "block";
+    diaryBox.innerHTML = diaryEntries.map(entry => `<p>• ${entry}</p>`).join("");
+}
+
+window.onload = loadDiary;
+</script>
+
+</body>
+</html>
